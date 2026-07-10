@@ -135,9 +135,15 @@ Full detail: **`90-day-plan.md`**.
 
 ## 7. What I couldn't verify (be aware)
 
-- **swych.com.au blocked automated crawling (HTTP 403).** The SEO plan is built
-  to an ideal structure — share your current nav/sitemap and it'll be mapped to
-  your real URLs, flagging overlaps/cannibalisation.
+- **The live swych.com.au was not analysed — a research-environment limit, not a
+  site problem.** The HTTP 403 seen while researching came from *this analysis
+  session's own network egress policy* (it blocks outbound connections to all
+  external hosts equally — verified against example.com, google.com and
+  competitor sites, which fail identically), **not** from anything on
+  swych.com.au. No evidence of any crawlability issue with the site exists; assume
+  it is fine until Google Search Console says otherwise. The SEO plan is therefore
+  built to an ideal structure — share your current nav/sitemap (or paste the page
+  HTML) and it'll be mapped to your real URLs, flagging overlaps/cannibalisation.
 - **Search-volume figures are directional** (the research tool is US-scoped).
   Opportunities are ranked by *competition + buyer intent*, not exact volumes —
   validate with Google Keyword Planner / a Search Console pull before committing
