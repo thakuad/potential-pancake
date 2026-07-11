@@ -1,5 +1,12 @@
 # Swych — SEO Page-by-Page Plan
 
+> **Reconciled with the live site → see `site-audit-actions.md` first.** A July
+> 2026 crawl showed several of these pages already exist (Queanbeyan, Googong,
+> Yass, Medical, APS, Construction, SMSF, Commercial). This blueprint remains the
+> reference for *how* each page should be built; `site-audit-actions.md` says
+> which to **build vs rewrite vs leave**, and flags urgent fixes (a broken
+> commercial canonical→404, nav gaps, cannibalisation).
+
 The blueprint for the long-tail moat. The strategy (`README.md`) says: don't
 fight for "mortgage broker Canberra" — win **town × niche** intersections where
 incumbents aren't playing. This file specifies every page to build, its target
