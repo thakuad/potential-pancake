@@ -26,8 +26,12 @@ rebuild. The gaps are specific and the wins are concrete.
    404** (`/services/commercial-loans`). Repoint it to the live page.
 3. **Empty/broken list item** in the footer "Locations We Serve" (a stray blank
    bullet between "Inner South Prestige" and "Queanbeyan"). Remove it.
+4. **Terms-of-service URL mismatch.** The XML sitemap lists `/terms-of-service`
+   (plural "terms"), but the live page is at `/term-of-service` (singular). The
+   sitemap is feeding Google a URL that likely 404s. Pick one slug, make the page
+   live there, 301 the other, and correct the sitemap + footer link to match.
 
-These three are quick, high-value hygiene fixes — do them before any content work.
+These are quick, high-value hygiene fixes — do them before any content work.
 
 ---
 
@@ -129,6 +133,10 @@ convert (and it supports the acreage/lifestyle angle on the Yass Valley towns).
 5. **Rewrite the homepage + `/locations/canberra`** to lead with "mobile, we come
    to you" and de-cannibalise the "Mortgage Broker Canberra" term.
 
-> Source: live crawl of swych.com.au, July 2026 (link-crawl of 27 pages; the XML
-> sitemap itself returned unreadable/gzipped and couldn't be parsed directly —
-> worth confirming it lists the same URLs and no orphans).
+> Source: live crawl of swych.com.au, July 2026 (link-crawl of 27 pages),
+> reconciled against `sitemap-index.xml` → `sitemap-pages.xml`. The sitemap is
+> healthy (28 URLs, valid lastmod/changefreq/priority, no orphans) and confirms
+> the gaps above: no Defence/DHOAS, Murrumbateman, Bungendore, Sutton, guides, or
+> rural-agri URLs exist. It also confirms `/services/commercial-loans` (the broken
+> canonical target) is not a real page, and exposed the `/terms-of-service` vs
+> `/term-of-service` slug mismatch. A `/locations` hub page also exists.
