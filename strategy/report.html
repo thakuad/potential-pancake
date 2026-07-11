@@ -1,0 +1,596 @@
+<title>Swych — Mortgage Broker Growth Strategy</title>
+<style>
+  :root {
+    --ground: #EDF0EF;
+    --surface: #FFFFFF;
+    --surface-2: #F5F8F6;
+    --ink: #131A1D;
+    --ink-soft: #4C575B;
+    --ink-faint: #79868A;
+    --line: #DBE2DF;
+    --line-strong: #C4CECA;
+    --accent: #BE6318;
+    --accent-ink: #8F4A11;
+    --accent-soft: #F4E5D5;
+    --pine: #1E5E51;
+    --pine-soft: #DDEAE4;
+    --open: #256B4E;
+    --open-bg: #DCEBE2;
+    --mid: #9A6A16;
+    --mid-bg: #F1E6CE;
+    --fortress: #A63C29;
+    --fortress-bg: #F2DAD2;
+    --radius: 14px;
+    --maxw: 1080px;
+    --font-display: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-body: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+    --font-mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0D1315;
+      --surface: #141C1F;
+      --surface-2: #1A2427;
+      --ink: #E9EEEC;
+      --ink-soft: #A2AFAC;
+      --ink-faint: #77857F;
+      --line: #26333A;
+      --line-strong: #33444A;
+      --accent: #E88C3E;
+      --accent-ink: #F0A863;
+      --accent-soft: #2E2015;
+      --pine: #55A38E;
+      --pine-soft: #17302B;
+      --open: #57B48A;
+      --open-bg: #143026;
+      --mid: #D2A44E;
+      --mid-bg: #2E2614;
+      --fortress: #E17963;
+      --fortress-bg: #331912;
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #EDF0EF; --surface: #FFFFFF; --surface-2: #F5F8F6;
+    --ink: #131A1D; --ink-soft: #4C575B; --ink-faint: #79868A;
+    --line: #DBE2DF; --line-strong: #C4CECA;
+    --accent: #BE6318; --accent-ink: #8F4A11; --accent-soft: #F4E5D5;
+    --pine: #1E5E51; --pine-soft: #DDEAE4;
+    --open: #256B4E; --open-bg: #DCEBE2; --mid: #9A6A16; --mid-bg: #F1E6CE;
+    --fortress: #A63C29; --fortress-bg: #F2DAD2;
+  }
+  :root[data-theme="dark"] {
+    --ground: #0D1315; --surface: #141C1F; --surface-2: #1A2427;
+    --ink: #E9EEEC; --ink-soft: #A2AFAC; --ink-faint: #77857F;
+    --line: #26333A; --line-strong: #33444A;
+    --accent: #E88C3E; --accent-ink: #F0A863; --accent-soft: #2E2015;
+    --pine: #55A38E; --pine-soft: #17302B;
+    --open: #57B48A; --open-bg: #143026; --mid: #D2A44E; --mid-bg: #2E2614;
+    --fortress: #E17963; --fortress-bg: #331912;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  .page {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  h1, h2, h3, .eyebrow, .label, th, .chip, .pill, .stat-num, .dot-meter, .roadmap-day, .tag {
+    font-family: var(--font-display);
+  }
+  h2 { font-size: clamp(1.5rem, 3.4vw, 2.15rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin: 0; text-wrap: balance; }
+  h3 { font-size: 1.06rem; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
+  p { margin: 0; }
+  a { color: var(--accent-ink); }
+
+  .eyebrow {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent-ink);
+  }
+  .label {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+  #contour { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; opacity: 0.9; }
+  .hero-inner { position: relative; z-index: 1; padding: 84px 0 68px; }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6.2vw, 4.1rem);
+    font-weight: 800; letter-spacing: -0.035em; line-height: 0.98;
+    margin: 20px 0 0; max-width: 15ch; text-wrap: balance;
+  }
+  .hero h1 .mark { color: var(--accent); }
+  .hero-lede { font-size: clamp(1.05rem, 2vw, 1.28rem); color: var(--ink-soft); max-width: 46ch; margin: 24px 0 0; line-height: 1.5; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 0.74rem; font-weight: 600; letter-spacing: 0.02em;
+    background: var(--surface); border: 1px solid var(--line-strong);
+    color: var(--ink-soft); padding: 7px 13px; border-radius: 999px;
+  }
+  .chip b { color: var(--ink); font-weight: 700; }
+  .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+  /* ---------- Section rhythm ---------- */
+  section { padding: 58px 0; border-bottom: 1px solid var(--line); }
+  .sec-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 26px; flex-wrap: wrap; }
+  .sec-idx {
+    font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;
+    color: var(--accent); border: 1px solid var(--line-strong);
+    padding: 3px 9px; border-radius: 6px; background: var(--surface);
+  }
+  .sec-sub { color: var(--ink-soft); font-size: 1.02rem; max-width: 62ch; margin-top: 10px; }
+
+  /* ---------- Thesis ---------- */
+  .thesis {
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius); padding: 30px 32px;
+    font-size: clamp(1.15rem, 2.3vw, 1.5rem); line-height: 1.4; color: var(--ink);
+  }
+  .thesis b { color: var(--accent-ink); font-weight: 700; }
+  .moves { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
+  .move { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 20px 22px; }
+  .move .roadmap-day { color: var(--accent); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; }
+  .move h3 { margin: 10px 0 8px; }
+  .move p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.5; }
+
+  /* ---------- Tables ---------- */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 0.92rem; }
+  thead th {
+    text-align: left; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 700; padding: 15px 18px;
+    border-bottom: 1px solid var(--line-strong); background: var(--surface-2); white-space: nowrap;
+  }
+  tbody td { padding: 15px 18px; border-bottom: 1px solid var(--line); color: var(--ink-soft); vertical-align: top; line-height: 1.45; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody td.name { color: var(--ink); font-family: var(--font-display); font-weight: 700; font-size: 0.94rem; white-space: nowrap; }
+  tbody td.num { font-variant-numeric: tabular-nums; font-family: var(--font-mono); color: var(--ink); font-size: 0.88rem; }
+  .miss { color: var(--accent-ink); font-weight: 600; }
+
+  /* ---------- Pills / meters ---------- */
+  .pill {
+    display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em;
+    padding: 3px 10px; border-radius: 999px; white-space: nowrap; text-transform: uppercase;
+  }
+  .pill.open { background: var(--open-bg); color: var(--open); }
+  .pill.mid { background: var(--mid-bg); color: var(--mid); }
+  .pill.fortress { background: var(--fortress-bg); color: var(--fortress); }
+  .dot-meter { display: inline-flex; gap: 3px; align-items: center; }
+  .dot-meter i { width: 9px; height: 9px; border-radius: 50%; background: var(--line-strong); display: inline-block; }
+  .dot-meter i.on { background: var(--accent); }
+
+  /* ---------- Stat tiles ---------- */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 26px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; position: relative; overflow: hidden; }
+  .stat::after { content: ""; position: absolute; right: -20px; bottom: -20px; width: 90px; height: 90px; border-radius: 50%; border: 1.5px solid var(--pine-soft); }
+  .stat-num { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1; }
+  .stat-num .arrow { color: var(--pine); }
+  .stat .label { margin-top: 12px; display: block; }
+  .stat .sub { font-size: 0.82rem; color: var(--ink-faint); margin-top: 4px; }
+
+  /* ---------- Niche cards ---------- */
+  .niches { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .niche { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 10px; }
+  .niche.flag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+  .niche-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .niche h3 { display: flex; align-items: center; gap: 9px; }
+  .flagtag { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--surface); background: var(--accent); padding: 3px 8px; border-radius: 5px; }
+  .niche .row { display: flex; gap: 8px; font-size: 0.8rem; color: var(--ink-faint); align-items: center; }
+  .niche .row .label { min-width: 90px; }
+  .niche p { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.5; }
+  .niche.full { grid-column: 1 / -1; border-style: dashed; background: var(--surface-2); }
+
+  /* ---------- Wedge pull quote ---------- */
+  .wedge { background: var(--ink); color: var(--surface); border-radius: var(--radius); padding: 44px 40px; position: relative; overflow: hidden; }
+  :root[data-theme="dark"] .wedge, .page .wedge { background: linear-gradient(135deg, #14201F 0%, #0f1a19 100%); }
+  .wedge .qmark { font-family: var(--font-display); font-size: 5rem; line-height: 0.6; color: var(--accent); opacity: 0.5; }
+  .wedge blockquote { margin: 8px 0 0; font-size: clamp(1.3rem, 3vw, 1.85rem); font-weight: 400; line-height: 1.35; color: #F3F6F4; max-width: 30ch; }
+  .wedge blockquote b { color: var(--accent-ink); font-weight: 700; }
+  .wedge .who { margin-top: 20px; font-family: var(--font-display); font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: #93A29E; }
+
+  /* ---------- Tactics ---------- */
+  .tactics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .tactic { display: flex; gap: 15px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+  .tactic .k { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 600; color: var(--accent); flex-shrink: 0; padding-top: 2px; }
+  .tactic h3 { margin-bottom: 6px; }
+  .tactic p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.5; }
+
+  /* ---------- Roadmap ---------- */
+  .roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+  .phase { padding: 24px 22px 26px; border-right: 1px solid var(--line); position: relative; }
+  .phase:last-child { border-right: none; }
+  .phase-bar { height: 4px; border-radius: 2px; margin-bottom: 16px; }
+  .phase:nth-child(1) .phase-bar { background: var(--accent); opacity: 0.4; }
+  .phase:nth-child(2) .phase-bar { background: var(--accent); opacity: 0.7; }
+  .phase:nth-child(3) .phase-bar { background: var(--accent); }
+  .roadmap-day { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; }
+  .phase h3 { margin: 4px 0 12px; font-size: 1.1rem; }
+  .phase ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .phase li { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.4; padding-left: 18px; position: relative; }
+  .phase li::before { content: ""; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* ---------- Top 3 ---------- */
+  .top3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: t; }
+  .t3 { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 22px; position: relative; }
+  .t3 .n { font-family: var(--font-display); font-size: 2.6rem; font-weight: 800; color: var(--accent); line-height: 1; letter-spacing: -0.03em; }
+  .t3 h3 { margin: 10px 0 8px; }
+  .t3 p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.5; }
+
+  /* ---------- Footer / caveats ---------- */
+  .foot { padding: 40px 0 64px; }
+  .caveats { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 26px; }
+  .caveats .label { margin-bottom: 12px; display: block; }
+  .caveats ul { margin: 0; padding-left: 18px; }
+  .caveats li { font-size: 0.86rem; color: var(--ink-faint); line-height: 1.55; margin-bottom: 6px; }
+  .foot-meta { margin-top: 24px; font-size: 0.82rem; color: var(--ink-faint); font-family: var(--font-display); letter-spacing: 0.02em; }
+
+  @media (max-width: 820px) {
+    .moves, .stats, .niches, .tactics, .roadmap, .top3 { grid-template-columns: 1fr; }
+    .phase { border-right: none; border-bottom: 1px solid var(--line); }
+    .phase:last-child { border-bottom: none; }
+    .niche.full { grid-column: auto; }
+    .body-lg { font-size: 17px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(14px); animation: rise 0.7s cubic-bezier(0.2,0.7,0.2,1) forwards; }
+  }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+</style>
+
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero">
+    <canvas id="contour" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner">
+      <span class="eyebrow">Growth Strategy &nbsp;·&nbsp; Swych &nbsp;·&nbsp; July 2026</span>
+      <h1>Own the gap the <span class="mark">map</span> leaves open.</h1>
+      <p class="hero-lede">Canberra's broker market is a review-moat fortress. So don't lay siege to it — flank it. The booming commuter belt is full of the exact clients you already serve, and served by almost nobody who fits them.</p>
+      <div class="hero-meta">
+        <span class="chip"><span class="dot"></span> Base: <b>Canberra, ACT</b></span>
+        <span class="chip">Model: <b>Mobile — we come to you</b></span>
+        <span class="chip">Flag planted: <b>Yass Valley → Googong → Bungendore</b></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- THESIS -->
+    <section>
+      <div class="sec-head"><span class="sec-idx">01</span><h2>The thesis</h2></div>
+      <div class="thesis reveal">
+        The Canberra commuter growth belt is filling with <b>public-service, Defence and medical</b> earners buying and building — yet it's served almost entirely by <b>rural/agri finance brokers</b> and satellite Canberra offices. A residential, niche-specialist, genuinely <b>mobile</b> broker owns the gap nobody is fighting for.
+      </div>
+      <div class="moves">
+        <div class="move">
+          <span class="roadmap-day">Move 01</span>
+          <h3>Geo wedge</h3>
+          <p>Stop competing for “mortgage broker Canberra.” Own the ring of high-growth NSW commuter towns as the <em>residential</em> specialist among agri brokers.</p>
+        </div>
+        <div class="move">
+          <span class="roadmap-day">Move 02</span>
+          <h3>Niche architecture</h3>
+          <p>Lead with Defence/DHOAS → APS → new builds → medical. Keep a full-service fallback so no enquiry — commercial, agri, car — ever leaks.</p>
+        </div>
+        <div class="move">
+          <span class="roadmap-day">Move 03</span>
+          <h3>Authority engine</h3>
+          <p>Service-area Google profile, a review engine, and long-tail town×niche pages. Rank for terms the incumbents don't target, so their review moat doesn't matter.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPETITORS -->
+    <section>
+      <div class="sec-head"><span class="sec-idx">02</span><h2>The competitive landscape</h2></div>
+      <p class="sec-sub">The generic term is owned by review-rich incumbents. Attacking it head-on is a multi-year, low-ROI fight. The right column is where they leave the door open.</p>
+      <div class="table-scroll reveal">
+        <table>
+          <thead>
+            <tr><th>Broker</th><th>Scale / moat</th><th>Model</th><th>What they don't own</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name">Clarity Home Loans</td>
+              <td><span class="num">1,300+</span> 5★ reviews · 19,000+ clients · 50+ lenders · 5× AFG Regional Brokerage of the Year</td>
+              <td>Salaried, office-based</td>
+              <td class="miss">Growth-town residential SEO · DHOAS positioning · “we come to you”</td>
+            </tr>
+            <tr>
+              <td class="name">Fairbanks Financial</td>
+              <td>90+ lenders · award-winning · targets APS/public service</td>
+              <td>Office-based</td>
+              <td class="miss">Town-level SEO · the APS niche isn't locked down</td>
+            </tr>
+            <tr>
+              <td class="name">Zanda Wealth</td>
+              <td>Est. 2006 · many 5★ · WOM Service Award</td>
+              <td>Office-based</td>
+              <td class="miss">Commuter belt · niche pages</td>
+            </tr>
+            <tr>
+              <td class="name">Loan Market Canberra</td>
+              <td>60+ lenders · AMA finalist</td>
+              <td>Franchise, office</td>
+              <td class="miss">Town-level &amp; niche long-tail</td>
+            </tr>
+            <tr>
+              <td class="name">Agri brokers</td>
+              <td>Regional &amp; Rural Finance, Aglend, Rivendell · 20+ yrs · own the town keywords</td>
+              <td>Rural / agribusiness focus</td>
+              <td class="miss">Residential, first-home, commuter &amp; new-build buyers</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- GEO GAP -->
+    <section>
+      <div class="sec-head"><span class="sec-idx">03</span><h2>The geographic gap</h2></div>
+      <p class="sec-sub">Demand is outrunning the <em>right</em> brokers. These towns are planned to double — with Canberra-income buyers — while the brokers “covering” them serve farms, not families.</p>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">3,607 <span class="arrow">→</span> 10k</div>
+          <span class="label">Murrumbateman</span>
+          <div class="sub">planned population</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">~5k <span class="arrow">→</span> 12k</div>
+          <span class="label">Bungendore</span>
+          <div class="sub">planned population</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">+10k <span class="arrow">↑</span></div>
+          <span class="label">Yass Valley by 2036</span>
+          <div class="sub">4,858 new dwellings</div>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Town</th><th>Current coverage</th><th>Competition</th><th style="text-align:right">Opportunity</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="name">Googong</td><td>Canberra satellites; no local residential specialist</td><td><span class="pill open">Wide open</span></td><td><div class="dot-meter" style="justify-content:flex-end"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></td></tr>
+            <tr><td class="name">Murrumbateman</td><td>Agri brokers (wine region)</td><td><span class="pill open">Wide open</span></td><td><div class="dot-meter" style="justify-content:flex-end"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></td></tr>
+            <tr><td class="name">Bungendore</td><td>Agri + Canberra satellites</td><td><span class="pill open">Wide open</span></td><td><div class="dot-meter" style="justify-content:flex-end"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></td></tr>
+            <tr><td class="name">Yass / Yass Valley</td><td>Agri brokers own it — for farms</td><td><span class="pill mid">Light</span></td><td><div class="dot-meter" style="justify-content:flex-end"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></td></tr>
+            <tr><td class="name">Queanbeyan</td><td>Some brokers (Casa, Aussie, Nexa)</td><td><span class="pill mid">Contested</span></td><td><div class="dot-meter" style="justify-content:flex-end"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></td></tr>
+            <tr><td class="name">Sutton / Gundaroo</td><td>Thin</td><td><span class="pill open">Wide open</span></td><td><div class="dot-meter" style="justify-content:flex-end"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></td></tr>
+            <tr><td class="name">Snowy / Monaro</td><td>2–3 active locals (Thunderbolt, Monaro, Greenline)</td><td><span class="pill fortress">Defended</span></td><td><div class="dot-meter" style="justify-content:flex-end"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></td></tr>
+            <tr><td class="name">Albury / Wodonga</td><td>Saturated · 3.5 hrs away</td><td><span class="pill fortress">Saturated</span></td><td><div class="dot-meter" style="justify-content:flex-end"><i class="on"></i><i></i><i></i><i></i><i></i></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- NICHE ARCHITECTURE -->
+    <section>
+      <div class="sec-head"><span class="sec-idx">04</span><h2>The niche architecture</h2></div>
+      <p class="sec-sub">Hero niches pull the traffic; full-service catches everything else. DHOAS is the flagship — highest complexity, highest broker value, and the one niche with no dominant local player.</p>
+      <div class="niches">
+        <div class="niche flag">
+          <div class="niche-top">
+            <h3>Defence / DHOAS <span class="flagtag">Flagship</span></h3>
+            <div class="dot-meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+          </div>
+          <div class="row"><span class="label">Demand</span> Russell · Duntroon · ADFA · HMAS Harman · Queanbeyan</div>
+          <div class="row"><span class="label">Competition</span> <span class="pill open">None locally</span></div>
+          <p>DHOAS specialists are national/veteran-owned. Own “DHOAS broker Canberra/Queanbeyan” — explain the subsidy tiers and posting paperwork nobody else bothers to.</p>
+        </div>
+        <div class="niche">
+          <div class="niche-top">
+            <h3>APS / Public service</h3>
+            <div class="dot-meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+          </div>
+          <div class="row"><span class="label">Demand</span> Canberra's core workforce</div>
+          <div class="row"><span class="label">Competition</span> <span class="pill mid">Fairbanks, unclaimed</span></div>
+          <p>Job-security lending perks (85% LVR no-LMI for some). Sharpen the signal you already send; own the allowance/contract-income know-how.</p>
+        </div>
+        <div class="niche">
+          <div class="niche-top">
+            <h3>New builds / House &amp; land</h3>
+            <div class="dot-meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+          </div>
+          <div class="row"><span class="label">Demand</span> Googong · Murrumbateman · Bungendore estates</div>
+          <div class="row"><span class="label">Competition</span> <span class="pill open">Ignored by agri</span></div>
+          <p>Construction-loan expertise + a physical presence at the display village. This is where geo and niche fuse into one offer.</p>
+        </div>
+        <div class="niche">
+          <div class="niche-top">
+            <h3>Medical / Healthcare</h3>
+            <div class="dot-meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+          </div>
+          <div class="row"><span class="label">Demand</span> LMI waivers up to 95% LVR</div>
+          <div class="row"><span class="label">Competition</span> <span class="pill mid">National, not local</span></div>
+          <p>Medimortgage &amp; MediPro are national. Be the Canberra-local, digital-first option for doctors, nurses and allied health.</p>
+        </div>
+        <div class="niche full">
+          <div class="niche-top"><h3>Full-service fallback</h3></div>
+          <p>Commercial · rural &amp; agri · SMSF · asset &amp; car finance · personal. Lean pages, but present — so “car loan Queanbeyan” or “commercial loan Canberra” finds you too. One broker for every loan, who comes to you.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WEDGE -->
+    <section>
+      <div class="wedge reveal">
+        <div class="qmark" aria-hidden="true">“</div>
+        <blockquote>A broker who comes to the <b>kitchen table</b> evenings &amp; weekends — and sits at the <b>display village</b> on Saturdays — is a wedge no office-bound Canberra firm can copy without changing its model.</blockquote>
+        <div class="who">The mobile advantage · decisive in the growth belt, wasted on Albury</div>
+      </div>
+    </section>
+
+    <!-- OUTRANK -->
+    <section>
+      <div class="sec-head"><span class="sec-idx">05</span><h2>How to out-rank them</h2></div>
+      <p class="sec-sub">You won't match 1,300 reviews soon — so don't compete where reviews decide the winner. Compete where the incumbents aren't playing at all.</p>
+      <div class="tactics">
+        <div class="tactic"><span class="k">SEO</span><div><h3>Town × niche long-tail</h3><p>“DHOAS broker Queanbeyan,” “construction loan Googong,” “first home buyer Murrumbateman.” Low competition, high intent.</p></div></div>
+        <div class="tactic"><span class="k">MAP</span><div><h3>Service-area Google profile</h3><p>List the towns you travel to, not one office pin. That's how a mobile broker ranks in multiple map packs at once.</p></div></div>
+        <div class="tactic"><span class="k">TRUST</span><div><h3>A review engine from day one</h3><p>Automated post-settlement requests, every review answered. Your weakest metric — so make it compound automatically.</p></div></div>
+        <div class="tactic"><span class="k">PR</span><div><h3>Borrow local authority</h3><p>Get into the Region Canberra / Canberra Times “best broker” round-ups and guest content on ACT-vs-NSW stamp duty.</p></div></div>
+        <div class="tactic"><span class="k">REFERRAL</span><div><h3>Partners in the growth towns</h3><p>Builders, display villages, buyers' agents, conveyancers. They drive leads <em>and</em> the local backlinks that lift rankings.</p></div></div>
+        <div class="tactic"><span class="k">CONTENT</span><div><h3>Own the border confusion</h3><p>ACT-vs-NSW stamp duty &amp; first-home schemes is a stated strength nobody covers cleanly. It's a link magnet that converts.</p></div></div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section>
+      <div class="sec-head"><span class="sec-idx">06</span><h2>The 90-day roadmap</h2></div>
+      <div class="roadmap">
+        <div class="phase">
+          <div class="phase-bar"></div>
+          <span class="roadmap-day">Days 0–30</span>
+          <h3>Foundation</h3>
+          <ul>
+            <li>Google profile → service-area (mobile), 7 towns</li>
+            <li>Review engine live + seed past clients</li>
+            <li>Publish DHOAS + Googong / Murrumbateman / Bungendore</li>
+            <li>Reposition the homepage; APS page</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="phase-bar"></div>
+          <span class="roadmap-day">Days 31–60</span>
+          <h3>Expand</h3>
+          <ul>
+            <li>Medical, Queanbeyan, Yass, Construction hub pages</li>
+            <li>Guides: ACT-vs-NSW stamp duty · DHOAS explained</li>
+            <li>Outreach to builders &amp; display villages</li>
+            <li>Local community groups + directory listings</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="phase-bar"></div>
+          <span class="roadmap-day">Days 61–90</span>
+          <h3>Authority</h3>
+          <ul>
+            <li>Pitch into “best broker” round-ups</li>
+            <li>Formalise referral partnerships</li>
+            <li>Hit the 15–20 review milestone</li>
+            <li>Measure rankings; double down on risers</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOP 3 -->
+    <section>
+      <div class="sec-head"><span class="sec-idx">07</span><h2>If you only do three things</h2></div>
+      <div class="top3">
+        <div class="t3"><div class="n">1</div><h3>DHOAS page + service-area profile</h3><p>Your least-contested, highest-value wedge. No dominant local player exists — take the flag before anyone notices it's there.</p></div>
+        <div class="t3"><div class="n">2</div><h3>Googong · Murrumbateman · Bungendore</h3><p>Own the growth belt with real local pages before another broker bothers. These towns are doubling; the door is open now.</p></div>
+        <div class="t3"><div class="n">3</div><h3>Review engine from day one</h3><p>The one metric you're behind on. Make it automatic at settlement so it compounds while you sleep — and never lose a review again.</p></div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <section class="foot">
+      <div class="caveats">
+        <span class="label">What to verify before you spend</span>
+        <ul>
+          <li>The live swych.com.au wasn't analysed — the 403 came from this research session's own network policy (it blocks all outbound hosts equally), not from your site. Assume the site is fine until Search Console says otherwise; share your live sitemap or page HTML to map the plan onto real URLs.</li>
+          <li>Search-volume reads are directional (US-scoped tool) — validate keywords in Google Keyword Planner / Search Console before committing budget.</li>
+          <li>Population figures are NSW planning &amp; council forecasts (Yass Valley Settlement Strategy 2036, id.com.au) — planning targets, not guarantees.</li>
+        </ul>
+      </div>
+      <p class="foot-meta">Swych Growth Strategy · Competitor &amp; market research, July 2026 · Companion docs: SEO page-by-page plan &amp; 90-day action checklist.</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  (function () {
+    var canvas = document.getElementById('contour');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W, H, dpr;
+    function accent() {
+      return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#BE6318';
+    }
+    function lineColor() {
+      var dark = matchMedia('(prefers-color-scheme: dark)').matches;
+      var attr = document.documentElement.getAttribute('data-theme');
+      if (attr === 'dark') dark = true; if (attr === 'light') dark = false;
+      return dark ? 'rgba(120,150,145,0.10)' : 'rgba(40,80,72,0.09)';
+    }
+    // Value-noise field for topographic contour lines
+    var grid = 26, gx = 0, gy = 0, field = [];
+    function seedField() {
+      gx = grid; gy = grid; field = [];
+      for (var y = 0; y <= gy; y++) {
+        field[y] = [];
+        for (var x = 0; x <= gx; x++) {
+          field[y][x] = Math.sin(x * 0.55) * Math.cos(y * 0.6) + Math.sin((x + y) * 0.3) * 0.6 + (x / gx) * 1.4;
+        }
+      }
+    }
+    function sample(px, py) {
+      var fx = px / W * gx, fy = py / H * gy;
+      var x0 = Math.floor(fx), y0 = Math.floor(fy);
+      var x1 = Math.min(x0 + 1, gx), y1 = Math.min(y0 + 1, gy);
+      var tx = fx - x0, ty = fy - y0;
+      var a = field[y0][x0], b = field[y0][x1], c = field[y1][x0], d = field[y1][x1];
+      return (a * (1 - tx) + b * tx) * (1 - ty) + (c * (1 - tx) + d * tx) * ty;
+    }
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      var step = 6, levels = 11;
+      var min = -2.2, max = 3.0;
+      var accentLevel = 7; // one contour picked out in accent
+      for (var l = 0; l < levels; l++) {
+        var thresh = min + (max - min) * (l / (levels - 1));
+        ctx.beginPath();
+        for (var py = 0; py < H; py += step) {
+          var prev = null;
+          for (var px = 0; px <= W; px += step) {
+            var v = sample(px, py);
+            var over = v > thresh;
+            if (prev !== null && over !== prev.over) {
+              ctx.moveTo(prev.x, py - step * 0.5);
+              ctx.lineTo(px, py + step * 0.5);
+            }
+            prev = { x: px, over: over };
+          }
+        }
+        if (l === accentLevel) {
+          ctx.strokeStyle = accent(); ctx.globalAlpha = 0.22; ctx.lineWidth = 1.4;
+        } else {
+          ctx.strokeStyle = lineColor(); ctx.globalAlpha = 1; ctx.lineWidth = 1;
+        }
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var rect = canvas.getBoundingClientRect();
+      W = rect.width; H = rect.height;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      seedField();
+      draw();
+    }
+    resize();
+    var t;
+    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(resize, 150); });
+    var mq = matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', draw);
+    new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  })();
+</script>
